@@ -1,0 +1,8 @@
+<?php
+
+// Status Codes...
+define('STATUS_CODE_SUCCESS', 200);
+define('STATUS_CODE_UNAUTHORIZED', 401);
+define('STATUS_CODE_NOT_FOUND', 404);
+define('STATUS_CODE_UNPROCESSABLE', 422);
+define('STATUS_CODE_INTERNAL_ERROR', 500);
