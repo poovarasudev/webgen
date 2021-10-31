@@ -34,7 +34,7 @@ class Product extends Model
         parent::boot();
 
         static::creating(function ($product) {
-            $product->user_id = auth()->id();
+            $product->user_id = $product->user_id ?: auth()->id();
         });
     }
 
