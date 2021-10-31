@@ -14,6 +14,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['prefix' => 'v1'], function () {
+    Route::post('login', [\App\Http\Controllers\Api\V1\AuthController::class, 'authenticate'])->name('login');
+    Route::post('register', [\App\Http\Controllers\Api\V1\AuthController::class, 'register'])->name('register');
+
+    Route::group(['middleware' => 'jwt.auth'], function () {
+        Route::get('profile', [\App\Http\Controllers\Api\V1\AuthController::class, 'profile'])->name('profile');
+        Route::delete('logout', [\App\Http\Controllers\Api\V1\AuthController::class, 'logout'])->name('logout');
+
+        // Resource route for products.
+        Route::apiResource('products', \App\Http\Controllers\Api\V1\ProductController::class, ['except' => ['show', 'edit', 'create']]);
+    });
 });

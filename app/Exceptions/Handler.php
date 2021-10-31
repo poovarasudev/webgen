@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\JsonResponse;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -37,5 +38,28 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    /**
+     * Render an exception into an HTTP response.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param Throwable $exception
+     * @return JsonResponse
+     * @throws Throwable
+     */
+    public function render($request, Throwable $exception)
+    {
+        if ($exception instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
+            if ($request->expectsJson()) {
+                $names = explode('\\', $exception->getModel());
+                $model = strtolower($names[2] ?? '');
+                $codeWithRouteName = strtoupper(getRouteNameForError()) . '-' . strtoupper($model) .'_NOT_FOUND-EXCEPTION';
+                return commonErrorMessage(STATUS_CODE_NOT_FOUND, $codeWithRouteName, 'The requested ' . $model . ' is not found.');
+            }
+            return response()->view('errors.404');
+        }
+
+        return parent::render($request, $exception);
     }
 }
