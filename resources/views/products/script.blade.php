@@ -6,6 +6,14 @@
             pageLength: 10,
             scrollX: true,
             order: [[ 4, "desc" ]],
+            columnDefs: [
+                {'width': '20%', 'targets': 0},
+                {'width': '15%', 'targets': 1},
+                {'width': '10%', 'targets': 2},
+                {'width': '40%', 'targets': 3},
+                {'width': '10%', 'targets': 4},
+                {'width': '10%', 'targets': 5},
+            ],
             ajax: '{{ route('get-products') }}',
             columns: [
                 {data: 'name', name: 'name', orderable:false},
