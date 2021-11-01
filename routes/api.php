@@ -18,7 +18,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::post('login', [\App\Http\Controllers\Api\V1\AuthController::class, 'authenticate'])->name('login');
     Route::post('register', [\App\Http\Controllers\Api\V1\AuthController::class, 'register'])->name('register');
 
-    Route::group(['middleware' => 'jwt.auth'], function () {
+    Route::group(['middleware' => 'jwt'], function () {
         Route::get('profile', [\App\Http\Controllers\Api\V1\AuthController::class, 'profile'])->name('profile');
         Route::delete('logout', [\App\Http\Controllers\Api\V1\AuthController::class, 'logout'])->name('logout');
 
